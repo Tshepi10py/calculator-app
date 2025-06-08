@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <table border="0">
+            <tr>
+                <td colspan="4">
+                    <input type="text" id="inputBox" value="0" readonly/>
+                </td>
+            </tr>
+            <tr>
+                <td class="digitButton" onclick="digitBtnPressed(this)">7</td>
+                <td class="digitButton" onclick="digitBtnPressed(this)">8</td>
+                <td class="digitButton" onclick="digitBtnPressed(this)">9</td>
+                <td class="operatorButton" onclick="operatorBtnPressed(this)">x</td>
+            </tr>
+            <tr>
+                <td class="digitButton" onclick="digitBtnPressed(this)">4</td>
+                <td class="digitButton" onclick="digitBtnPressed(this)">5</td>
+                <td class="digitButton" onclick="digitBtnPressed(this)">6</td>
+                <td class="operatorButton" onclick="operatorBtnPressed(this)">-</td>
+            </tr>
+            <tr>
+                <td class="digitButton" onclick="digitBtnPressed(this)">1</td>
+                <td class="digitButton" onclick="digitBtnPressed(this)">2</td>
+                <td class="digitButton" onclick="digitBtnPressed(this)">3</td>
+                <td class="operatorButton" onclick="operatorBtnPressed(this)">+</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="digitButton" onclick="digitBtnPressed(this)">0</td>
+                <td class="ACButton" onclick="clearInput()">AC</td>
+                <td class="operatorButton" onclick="operatorBtnPressed(this)">/</td>
+            </tr>
+            <tr>
+                <td colspan="4" class="operatorButton" onclick="calculateResult()">=</td>
+            </tr>
+        </table>
+
+        <script>
+            function digitBtnPressed(button){
+                var currentValue = document.getElementById("inputBox").value;
+                // Remove leading zero if present and not after an operator
+                if(currentValue === "0") {
+                    document.getElementById("inputBox").value = button.innerHTML;
+                } else if (/ [\+\-x\/] $/.test(currentValue)) {
+                    document.getElementById("inputBox").value = currentValue + button.innerHTML;
+                } else if (currentValue.endsWith(" 0")) {
+                    document.getElementById("inputBox").value = currentValue.slice(0, -1) + button.innerHTML;
+                } else {
+                    document.getElementById("inputBox").value = currentValue + button.innerHTML;
+                }
+            }
+
+            function operatorBtnPressed(button){
+                var currentValue = document.getElementById("inputBox").value;
+                // Hide the operator button when clicked
+                button.style.visibility = "hidden";
+                document.getElementById("inputBox").value = currentValue + " " + button.innerHTML + " ";
+            }
+
+            function clearInput(){
+                document.getElementById("inputBox").value = "0";
+            }
+
+            function calculateResult(){
+                var input = document.getElementById("inputBox").value.replace(/x/g, '*');
+                try {
+                    var result = eval(input);
+                    document.getElementById("inputBox").value = result;
+                } catch (e) {
+                    document.getElementById("inputBox").value = "Error";
+                }
+            }
+        </script>
+    </body>
+</html>
